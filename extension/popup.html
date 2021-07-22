@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="stylesheet" href="./materialize/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="./materialize/js/materialize.min.js"></script>
+    <script src="./js/popup.js"></script>
+
+  </head>
+  <body>
+    <div class="fake_news-wrapper">
+      <div class="fake_news-introduction">
+        <h4>Detect fake news</h4>
+        <p>Using artifical intelligence</p>
+      </div>
+      <div class="card">
+        <div class="progress">
+          <div class="indeterminate"></div>
+        </div>
+        <div class="card-image waves-effect waves-block waves-light">
+          <img src="./images/fake-news.jpeg">
+        </div>
+        <div class="card-content">
+          <span class="card-title grey-text text-darken-4">is your article safe?</span>
+          <button id="action" class="activator btn waves-effect waves-light" type="submit" name="action">Run checking
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+        <div class="card-reveal">
+          <span class="card-title"><i class="material-icons right">close</i></span>
+          <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+            </div>
+          </div>
+          <span class="card-title green-text text-darken-4">Give me a second...</span>
+          <div id="safe" class="fake_news-info fake_news-info--safe hidden">
+            This site is safe
+          </div>
+          <div id="danger" class="fake_news-info fake_news-info--danger hidden">
+            This site is not safe
+          </div>
+          <p>Here is some more information about this product that is only revealed once clicked on.</p>
+        </div>
+      </div>
+      <div class="loading"></div>
+    </div>
+  </body>
+</html>
+
