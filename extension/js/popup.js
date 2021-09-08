@@ -1,38 +1,77 @@
-document.addEventListener('DOMContentLoaded', init);
+import Service from './service.js';
 
 function detectFakeNews() {
   console.info("DETECTING!!! PLEASE WAIT!");
-  chrome.runtime.sendMessage({ url: window.location.href }, function(response) {
+  chrome.runtime.sendMessage({ type: 'fetch', url: window.location.href }, function(response) {
     console.log(response.farewell);
   });
 }
 
-
-function showMessage(message) {
-  const safe = document.getElementById("safe");
-  const danger = document.getElementById("danger");
-
-  console.log(message)
-  // reset elements
-  if (!safe.classList.contains('hidden')) {
-    safe.classList.add('hidden')
+const resetMessages = ({ preload, response }) => {
+  if (!preload.classList.contains('hidden')) {
+    preload.classList.add('hidden')
   }
+  response.innerHTML = ''
+}
 
-  if (!danger.classList.contains('hidden')) {
-    danger.classList.add('hidden')
-  }
+const dictionary = {
+  lstm: 'NEW LSTM',
+  lstm_simple: 'LSTM',
+  nlp: 'ML'
+}
 
-  if (message) {
-    safe.classList.remove('hidden')
-  } 
+const showMessage = ({ preload, safe, danger, response }, answer) => {
+  Object.entries(answer).forEach(([key, value]) => {
+    if (value != null) {
+      const elementBox = document.createElement('div')
+      const name = document.createElement('h6')
+      const iconBox = document.createElement('div')
+      const icon = document.createElement('i')
 
-  if (!message) {
-    danger.classList.remove('hidden')
+      elementBox.className = 'row'
+      name.className = 'col s6'
+      name.innerText = dictionary[key]
+      iconBox.className = 'col s3'
+      icon.className = `medium material-icons ${value > 0 ? 'green-text' : 'red-text'}`
+      icon.innerText =  value > 0 ? 'thumb_up' : 'thumb_down'
+
+      elementBox.appendChild(name)
+      elementBox.appendChild(iconBox)
+      iconBox.appendChild(icon)
+
+      response.appendChild(elementBox)
+    }
+  })
+
+  if (!answer) {
+    danger.classList.remove('hidden');
   }
 }
 
 function init(event) {
   const action = document.getElementById("action");
+  const preload = document.getElementById("preloader");
+  const safe = document.getElementById("safe");
+  const danger = document.getElementById("danger");
+  const response = document.getElementById("response");
+
+  // get algorithm switch nodeElements;
+  const lstm = document.getElementById("lstm");
+  const nlp = document.getElementById("nlp");
+  const lstm_simple = document.getElementById("lstm_simple");
+
+  let algorithms = {
+    lstm: true,
+    nlp: false,
+    lstm_simple: false
+  }
+
+  // set algorithms to use
+  Array.from([lstm, nlp, lstm_simple]).forEach((el) => {
+    el.addEventListener('change', () => {
+      algorithms[el.id] = el.checked;
+    })
+  });
 
   action.addEventListener("click", async () => {
     // get current tab
@@ -45,20 +84,28 @@ function init(event) {
     });
   });
 
+
   // listen for message from `detectFakeNews` injected script
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      fetch('http://127.0.0.1:5000/keras', {
-        method: 'POST', 
-        headers: { "Accept": "application/json" },
-        body: JSON.stringify(request.url)
-      })
-      .then((res) => res.json())
-      .then((res) => showMessage(res.legit))
-      .catch((err) => console.log(err))
+      console.log('is fetching!!1')
 
-      if (request.greeting == "hello")
-        sendResponse({farewell: "goodbye"});
+      const { type, text, url } = request;
+
+      if (type === 'fetch') {
+        resetMessages({preload, response});
+        console.log('is fetching!!')
+        preload.classList.remove('hidden');
+
+        Service.getArticleOpinion({body: { text: text || '', url: url || '', algorithms}, algorithmName: 'detect'})
+          .then(res => {
+            const { answer } = res;
+            preload.classList.add('hidden');
+            showMessage({preload, safe, danger, response}, answer)
+          })
+      }
     }
   );
 }
+
+document.addEventListener('DOMContentLoaded', init);
