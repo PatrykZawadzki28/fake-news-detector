@@ -18,10 +18,15 @@
 
 ## Instructions
 
+### Prepare databases 
+1. Go to `https://drive.google.com/drive/folders/1zW7wE-IbmptHAH9ncqH1ZvQ5XQB-vYpW?usp=sharing`
+and download the data. In project main directory create folder `/databases` and put the downloaded data inside
+   
 ### Prepare models:
-1. `python LSTM.py` #can take several hours
-2. `python LSTM-simple.py` #pretty fast
-3. `python NLP.py` #pretty fast
+1.  In project main directory create folder `/models`
+2. `python LSTM.py` #can take several hours
+3. `python LSTM-simple.py` #pretty fast
+4. `python NLP.py` #pretty fast
 
 Models are saved inside `/models` folder.
 
