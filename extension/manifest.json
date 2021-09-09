@@ -1,0 +1,13 @@
+{
+  "name": "Fake news detector",
+  "description": "Detect the fake articles among your websites",
+  "permissions": ["activeTab", "scripting", "contextMenus"],
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "rightClick.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

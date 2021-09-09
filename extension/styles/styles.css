@@ -1,0 +1,51 @@
+body {
+  background: #e3e3e3;
+  font-size: 10px;
+}
+
+.fake_news-wrapper {
+  width: 20rem;
+  background: #e3e3e3;
+  color: black;
+  padding: .5rem;
+}
+
+.fake_news-introduction {
+  padding: .25rem 1rem;
+}
+
+.fake_news-introduction p {
+  font-size: 14px;
+}
+
+.fake_news-check_button {
+  height: 2rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.preloader-wrapper-parent {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  justify-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.answer-wrapper {
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*align-items: center;*/
+  /*justify-content: center;*/
+  padding: .8rem;
+}
+
+.switch {
+  margin-bottom: 1rem;
+}
